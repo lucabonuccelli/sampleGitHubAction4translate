@@ -1,0 +1,87 @@
+name: Automatic Documentation Translation
+
+on:
+  push:
+    branches: [ main ]
+    paths: [ 'docs/en/**' ] # Si attiva solo quando cambiano i file inglesi
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  translate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2 # Necessario per calcolare il git diff rispetto al commit precedente
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install Dependencies
+        run: pip install deep-translator requests
+
+      - name: Run Translation Script
+        id: run-translation
+        env:
+          TRANSLATION_ENGINE: "google" # Cambia in "libretranslate" se preferisci
+          LIBRETRANSLATE_API: "https://libretranslate.com/translate"
+        run: |
+          python .github/scripts/translate_docs.py
+          if [ -n "$(git status --porcelain docs/it/)" ]; then
+            echo "changes_detected=true" >> $GITHUB_OUTPUT
+          else
+            echo "changes_detected=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Pull Request
+        if: steps.run-translation.outputs.changes_detected == 'true'
+        id: cpr
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "docs: automatic translation update"
+          branch: l10n-it-update
+          title: "🤖 [Translation] Automatic translation draft (IT)"
+          body: |
+            Questa Pull Request è stata generata automaticamente con la traduzione delle sole righe modificate.
+            
+            ### ⚠️ REGOLA DI REVISIONE FONDAMENTALE
+            Per garantire il corretto funzionamento dell'allineamento incrementale in futuro, la corrispondenza delle righe tra il file inglese e quello italiano deve rimanere 1:1.
+            
+            * **SÌ:** Correggi o adatta il testo all'interno delle righe esistenti.
+            * **NO:** Non aggiungere nuove righe vuote, non eliminare righe e non andare a capo manualmente spezzando una riga.
+          labels: |
+            translation
+            ready-for-review
+
+      - name: Create Issue and Assign Reviewers
+        if: steps.run-translation.outputs.changes_detected == 'true' && steps.cpr.outputs.pull-request-number != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = "${{ steps.cpr.outputs.pull-request-number }}";
+            const prUrl = "${{ steps.cpr.outputs.pull-request-url }}";
+            
+            // Sostituisci con l'username GitHub del revisore reale
+            const assignees = ["tuo-username-github"]; 
+            
+            const issueBody = `Ciao @${assignees.join(', @')},\n\n` +
+                              `È stata generata una nuova bozza di traduzione automatica.\n\n` +
+                              `🔗 **Pull Request:** ${prUrl}\n\n` +
+                              `⚠️ **REGOLA CRITICA:** Limita le tue modifiche esclusivamente al testo sulle righe esistenti. Non aggiungere, rimuovere o spezzare le righe per non compromettere i futuri aggiornamenti automatici riga per riga.`;
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🔍 Translation Review Needed (PR #${prNumber})`,
+              body: issueBody,
+              assignees: assignees,
+              labels: ['translation', 'ready-for-review']
+            });
