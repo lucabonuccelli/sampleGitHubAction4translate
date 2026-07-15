@@ -2,7 +2,7 @@
 
 ---
 
-## English Version
+## The PoC
 
 This repository is a **Proof of Concept (PoC)** demonstrating how to automate documentation translation for open-source projects. It keeps translated files constantly synchronized with English updates, reducing maintainer overhead to practically zero.
 
