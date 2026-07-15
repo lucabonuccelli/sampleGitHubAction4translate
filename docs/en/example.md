@@ -6,4 +6,6 @@ We can add technical specifications and guide lists here.
 
 i create this new line
 
-secondo new line
+second new line
+
+I'have an idea
