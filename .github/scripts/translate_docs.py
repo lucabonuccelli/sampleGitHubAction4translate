@@ -47,14 +47,17 @@ def translate_full_file(en_path, it_path):
         en_lines = f.readlines()
     
     translated_lines = []
-    for line in en_lines:
+    for i, line in enumerate(en_lines, start=1):
         if line.strip() == "":
             translated_lines.append("\n")
-        else:
-            has_newline = line.endswith("\n")
-            translated = translate_text(line.strip()) or line.strip()            
-            translated_lines.append(translated + ("\n" if has_newline else ""))
-            
+            continue
+        has_newline = line.endswith("\n")
+        print(f"[{i}] INPUT  : {repr(line.strip())}")
+        translated = translate_text(line.strip())
+        print(f"[{i}] OUTPUT : {repr(translated)}")
+        if translated is None:
+            raise RuntimeError(f"GoogleTranslator ha restituito None alla riga {i}: {repr(line.strip())}")
+    translated_lines.append(translated + ("\n" if has_newline else ""))
     os.makedirs(os.path.dirname(it_path), exist_ok=True)
     with open(it_path, "w", encoding="utf-8") as f:
         f.writelines(translated_lines)
