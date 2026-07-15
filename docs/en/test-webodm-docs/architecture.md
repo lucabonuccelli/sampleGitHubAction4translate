@@ -1,6 +1,6 @@
 ---
 title: Architecture
-template: doc
+template: doc 
 ---
 
 [WebODM](https://github.com/WebODM/WebODM) is composed of several components.
