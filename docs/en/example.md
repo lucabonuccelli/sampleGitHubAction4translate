@@ -5,3 +5,5 @@ This is a paragraph inside our documentation. This tool helps translation synchr
 We can add technical specifications and guide lists here.
 
 i create this new line
+
+secondo new line
