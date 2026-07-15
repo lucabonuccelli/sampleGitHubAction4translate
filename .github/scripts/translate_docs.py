@@ -57,7 +57,7 @@ def translate_full_file(en_path, it_path):
         translated = translate_text(line.strip())
         print(f"[{i}] OUTPUT : {repr(translated)}")
         if translated is None:
-            raise RuntimeError(f"GoogleTranslator ha restituito None alla riga {i}: {repr(line.strip())}")
+            print(f"GoogleTranslator ha restituito None alla riga {i}: {repr(line.strip())}")
             translated=line
     translated_lines.append(translated + ("\n" if has_newline else ""))
     os.makedirs(os.path.dirname(it_path), exist_ok=True)
