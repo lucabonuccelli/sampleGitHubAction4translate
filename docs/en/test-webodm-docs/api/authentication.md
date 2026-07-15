@@ -1,5 +1,5 @@
 ---
-title: Authentication
+title: Authentication 
 template: doc
 ---
 
