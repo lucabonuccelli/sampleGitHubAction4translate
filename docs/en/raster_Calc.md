@@ -1,8 +1,11 @@
 # QGIS Raster Calculator
 
-The **Raster Calculator** is a tool in QGIS that allows you to create new raster datasets by applying mathematical and logical expressions to one or more existing raster layers.
+The **Raster Calculator** is one of the most important tools in QGIS that allows you to create new raster datasets by applying mathematical and logical expressions to one or more existing raster layers.
 
 Each pixel of the output raster is calculated independently using the values of the corresponding pixels from the input rasters. This makes the Raster Calculator a powerful tool for performing spatial analysis, deriving new datasets, and automating complex raster processing tasks.
+
+## note 
+If You need something like "min/max value in a area" you hen to use other tools (Eg TODO)
 
 ## Common Uses
 
@@ -46,7 +49,6 @@ This computes the **Normalized Difference Vegetation Index (NDVI)** from near-in
 
 The Raster Calculator generates a new raster layer whose:
 
-* extent,
 * resolution,
 * coordinate reference system (CRS), and
 * pixel values
