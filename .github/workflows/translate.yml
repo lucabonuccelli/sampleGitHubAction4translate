@@ -74,8 +74,8 @@ jobs:
             
             const issueBody = `Ciao @${assignees.join(', @')},\n\n` +
                               `È stata generata una nuova bozza di traduzione automatica.\n\n` +
-                              `🔗 **Pull Request:** ${prUrl}\n\n` +
-                              `⚠️ **REGOLA CRITICA:** Limita le tue modifiche esclusivamente al testo sulle righe esistenti. Non aggiungere, rimuovere o spezzare le righe per non compromettere i futuri aggiornamenti automatici riga per riga.`;
+                              ` **Pull Request:** ${prUrl}\n\n` +
+                              ` **REGOLA CRITICA:** Limita le tue modifiche esclusivamente al testo sulle righe esistenti. Non aggiungere, rimuovere o spezzare le righe per non compromettere i futuri aggiornamenti automatici riga per riga.`;
 
             await github.rest.issues.create({
               owner: context.repo.owner,
