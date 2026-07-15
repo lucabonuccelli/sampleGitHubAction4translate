@@ -70,7 +70,7 @@ jobs:
             const prUrl = "${{ steps.cpr.outputs.pull-request-url }}";
             
             // Sostituisci con l'username GitHub del revisore reale
-            const assignees = ["lucabonuccellis"]; 
+            const assignees = ["lucabonuccelli"]; 
             
             const issueBody = `Ciao @${assignees.join(', @')},\n\n` +
                               `È stata generata una nuova bozza di traduzione automatica.\n\n` +
