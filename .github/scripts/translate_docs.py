@@ -48,6 +48,7 @@ def translate_full_file(en_path, it_path):
     
     translated_lines = []
     for i, line in enumerate(en_lines, start=1):
+        print(f"riga {i} : {line}")
         if line.strip() == "":
             translated_lines.append("\n")
             continue
