@@ -52,7 +52,7 @@ def translate_full_file(en_path, it_path):
             translated_lines.append("\n")
         else:
             has_newline = line.endswith("\n")
-            translated = translate_text(line.strip())
+            translated = translate_text(line.strip()) or line.strip()            
             translated_lines.append(translated + ("\n" if has_newline else ""))
             
     os.makedirs(os.path.dirname(it_path), exist_ok=True)
